@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Extract Links Plugin
  * Description: A plugin to extract all links from a website.
- * Version: 1.1
+ * Version: 1.2
  * Author: Your Name
  * License: GPL2
  */
@@ -37,17 +37,64 @@ function extract_links($url) {
 
 // Function to display the form and extracted links
 function extract_links_form() {
+    // Add custom styles
+    echo '<style>
+    .extract-links-form {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .extract-links-form input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .extract-links-form input[type="submit"] {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #0073aa;
+        color: #fff;
+        cursor: pointer;
+    }
+    .extract-links-form input[type="submit"]:hover {
+        background-color: #005a8c;
+    }
+    .extract-links-output ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    .extract-links-output li {
+        margin-bottom: 5px;
+    }
+    .extract-links-output a {
+        color: #0073aa;
+        text-decoration: none;
+    }
+    .extract-links-output a:hover {
+        text-decoration: underline;
+    }
+    </style>';
+
+    // Check if form is submitted and process the URL
     if (isset($_POST['extract_links_submit'])) {
         $url = esc_url_raw($_POST['extract_links_url']);
         $links = extract_links($url);
-        echo '<ul>';
+        echo '<div class="extract-links-output"><ul>';
         foreach ($links as $link) {
             echo '<li><a href="' . esc_url($link['url']) . '">' . esc_html($link['text']) . '</a></li>';
         }
-        echo '</ul>';
+        echo '</ul></div>';
     }
 
-    echo '<form method="post" action="">';
+    // Display the form
+    echo '<form method="post" action="" class="extract-links-form">';
     echo '<input type="text" name="extract_links_url" placeholder="Enter URL" required />';
     echo '<input type="submit" name="extract_links_submit" value="Extract Links" />';
     echo '</form>';
